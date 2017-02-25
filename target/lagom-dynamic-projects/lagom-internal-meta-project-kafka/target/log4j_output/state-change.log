@@ -1,0 +1,1 @@
+[2017-02-25 22:24:19,253] TRACE Controller 0 epoch 1 received response {error_code=0} for a request sent to broker deepak-Vostro-3546:9092 (id: 0 rack: null) (state.change.logger)
