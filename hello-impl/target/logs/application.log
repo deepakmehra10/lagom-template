@@ -1,3 +1,0 @@
-2017-02-25 22:28:05,268 [WARN] from com.lightbend.lagom.internal.persistence.cassandra.ServiceLocatorSessionProvider in hello-impl-application-lagom.persistence.dispatcher-31 - Could not find Cassandra contact points, due to: ServiceLocator is not bound
-2017-02-25 22:28:25,635 [ERROR] from akka.cluster.sharding.PersistentShardCoordinator in hello-impl-application-akka.actor.default-dispatcher-3 - Persistence failure when replaying events for persistenceId [/sharding/HelloEntityCoordinator]. Last known sequence number [0]
-akka.pattern.CircuitBreaker$$anon$1: Circuit Breaker Timed out.
