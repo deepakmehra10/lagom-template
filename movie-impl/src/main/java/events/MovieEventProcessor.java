@@ -3,13 +3,11 @@ package events;
 import akka.Done;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
-import com.knoldus.Moviecrud.Movie.impl.events.MovieEvent.MovieCreated;
-import com.knoldus.Moviecrud.Movie.impl.events.MovieEvent.MovieDeleted;
-import com.knoldus.Moviecrud.Movie.impl.events.MovieEvent.MovieUpdated;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraSession;
+import events.MovieEvent.*;
 import org.pcollections.PSequence;
 import org.pcollections.TreePVector;
 import org.slf4j.Logger;
@@ -63,7 +61,7 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     private CompletionStage<Done> createTable() {
         return session.executeCreateTable(
                 "CREATE TABLE IF NOT EXISTS Movies ( " +
-                        "id TEXT, name TEXT, age INT, PRIMARY KEY(id))"
+                        "id TEXT, name TEXT, genre TEXT, PRIMARY KEY(id))"
         );
     }
 
@@ -73,7 +71,7 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     */
     private CompletionStage<Done> prepareWriteMovie() {
         return session.prepare(
-                "INSERT INTO Movies (id, name, genre, director, year) VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO Movies (id, name, genre) VALUES (?, ?, ?)"
         ).thenApply(ps -> {
             setWriteMovies(ps);
             return Done.getInstance();
@@ -101,7 +99,7 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
         BoundStatement bindWriteMovie = writeMovies.bind();
         bindWriteMovie.setString("id", event.getMovie().getId());
         bindWriteMovie.setString("name", event.getMovie().getName());
-        bindWriteMovie.setInt("age", event.getMovie().getAge());
+        bindWriteMovie.setString("genre", event.getMovie().getGenre());
         return CassandraReadSide.completedStatements(Arrays.asList(bindWriteMovie));
     }
     /* ******************* END ****************************/

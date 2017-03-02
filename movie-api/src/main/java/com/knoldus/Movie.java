@@ -13,9 +13,8 @@ import javax.annotation.concurrent.Immutable;
 @JsonDeserialize
 @AllArgsConstructor
 public final class Movie {
-    int id;
+    String id;
     String name;
     String genre;
-    String director;
-    int year;
+
 }

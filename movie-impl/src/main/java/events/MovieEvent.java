@@ -1,7 +1,7 @@
 package events;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.knoldus.usercurd.user.api.User;
+import com.knoldus.Movie;
 import com.lightbend.lagom.javadsl.persistence.AggregateEvent;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTagger;
 import com.lightbend.lagom.serialization.CompressedJsonable;
@@ -13,19 +13,19 @@ import lombok.Value;
 /**
  * Created by knoldus on 30/1/17.
  */
-public interface MovieEvent extends Jsonable, AggregateEvent<UserEvent> {
+public interface MovieEvent extends Jsonable, AggregateEvent<MovieEvent> {
 
     @Override
-    default AggregateEventTagger<UserEvent> aggregateTag() {
-        return UserEventTag.INSTANCE;
+    default AggregateEventTagger<MovieEvent> aggregateTag() {
+        return MovieEventTag.INSTANCE;
     }
 
     @Value
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class UserCreated implements UserEvent, CompressedJsonable {
-        User user;
+    final class MovieCreated implements MovieEvent, CompressedJsonable {
+        Movie movie;
         String entityId;
     }
 
@@ -33,8 +33,8 @@ public interface MovieEvent extends Jsonable, AggregateEvent<UserEvent> {
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class UserUpdated implements UserEvent, CompressedJsonable {
-        User user;
+    final class MovieUpdated implements MovieEvent, CompressedJsonable {
+        Movie movie;
         String entityId;
     }
 
@@ -42,8 +42,8 @@ public interface MovieEvent extends Jsonable, AggregateEvent<UserEvent> {
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class UserDeleted implements UserEvent, CompressedJsonable {
-        User user;
+    final class MovieDeleted implements MovieEvent, CompressedJsonable {
+        Movie movie;
         String entityId;
     }
 }

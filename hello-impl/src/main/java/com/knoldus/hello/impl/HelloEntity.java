@@ -22,7 +22,7 @@ import com.knoldus.hello.impl.HelloEvent.GreetingMessageChanged;
  * used to change the greeting, and a {@link Hello} command, which is a read
  * only command which returns a greeting to the name specified by the command.
  * <p>
- * Commands get translated to events, and it's the events that get persisted by
+ * commands get translated to events, and it's the events that get persisted by
  * the entity. Each event will have an event handler registered for it, and an
  * event handler simply applies an event to the current state. This will be done
  * when the event is first created, and it will also be done when the entity is

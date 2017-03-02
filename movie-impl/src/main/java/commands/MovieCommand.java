@@ -2,7 +2,7 @@ package commands;
 
 import akka.Done;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.knoldus.usercurd.user.api.User;
+import com.knoldus.Movie;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import com.lightbend.lagom.serialization.Jsonable;
 import lombok.AllArgsConstructor;
@@ -20,26 +20,26 @@ public interface MovieCommand extends Jsonable {
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class CreateUser implements UserCommand, PersistentEntity.ReplyType<Done> {
-        User user;
+    final class CreateMovie implements MovieCommand, PersistentEntity.ReplyType<Done> {
+        Movie movie;
     }
 
     @Value
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class UpdateUser implements UserCommand, PersistentEntity.ReplyType<Done> {
-        User user;
+    final class UpdateMovie implements MovieCommand, PersistentEntity.ReplyType<Done> {
+        Movie movie;
     }
 
     @Value
     @Builder
     @JsonDeserialize
     @AllArgsConstructor
-    final class DeleteUser implements UserCommand, PersistentEntity.ReplyType<Done> {
-        User user;
+    final class DeleteMovie implements MovieCommand, PersistentEntity.ReplyType<Done> {
+        Movie movie;
     }
 
     @JsonDeserialize
-    final class UserCurrentState implements UserCommand, PersistentEntity.ReplyType<Optional<User>> {}
+    final class MovieCurrentState implements MovieCommand, PersistentEntity.ReplyType<Optional<Movie>> {}
 }

@@ -1,52 +1,54 @@
 import akka.Done;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
+import commands.MovieCommand;
+import events.MovieEvent;
 import states.MovieStates;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class MovieEntity  extends PersistentEntity<MovieCommand, MovieEvent, MovieState> {
+public class MovieEntity  extends PersistentEntity<MovieCommand, MovieEvent, MovieStates> {
 
     @Override
     public Behavior initialBehavior(Optional<MovieStates> snapshotState) {
 
-        // initial behaviour of user
+        // initial behaviour of movie
         BehaviorBuilder behaviorBuilder = newBehaviorBuilder(
-                MovieState.builder().user(Optional.empty())
+                MovieStates.builder().movie(Optional.empty())
                         .timestamp(LocalDateTime.now().toString()).build()
         );
 
-        behaviorBuilder.setCommandHandler(CreateMovie.class, (cmd, ctx) ->
-                ctx.thenPersist(MovieCreated.builder().user(cmd.getMovie())
+        behaviorBuilder.setCommandHandler(MovieCommand.CreateMovie.class, (cmd, ctx) ->
+                ctx.thenPersist(MovieEvent.MovieCreated.builder().movie(cmd.getMovie())
                         .entityId(entityId()).build(), evt -> ctx.reply(Done.getInstance()))
         );
 
-        behaviorBuilder.setEventHandler(MovieCreated.class, evt ->
-                MovieState.builder().user(Optional.of(evt.getMovie()))
+        behaviorBuilder.setEventHandler(MovieEvent.MovieCreated.class, evt ->
+                MovieStates.builder().movie(Optional.of(evt.getMovie()))
                         .timestamp(LocalDateTime.now().toString()).build()
         );
 
-        behaviorBuilder.setCommandHandler(UpdateMovie.class, (cmd, ctx) ->
-                ctx.thenPersist(MovieUpdated.builder().user(cmd.getMovie()).entityId(entityId()).build()
+        behaviorBuilder.setCommandHandler(MovieCommand.UpdateMovie.class, (cmd, ctx) ->
+                ctx.thenPersist(MovieEvent.MovieUpdated.builder().movie(cmd.getMovie()).entityId(entityId()).build()
                         , evt -> ctx.reply(Done.getInstance()))
         );
 
-        behaviorBuilder.setEventHandler(MovieUpdated.class, evt ->
-                MovieState.builder().user(Optional.of(evt.getMovie()))
+        behaviorBuilder.setEventHandler(MovieEvent.MovieUpdated.class, evt ->
+                MovieStates.builder().movie(Optional.of(evt.getMovie()))
                         .timestamp(LocalDateTime.now().toString()).build()
         );
 
-        behaviorBuilder.setCommandHandler(DeleteMovie.class, (cmd, ctx) ->
-                ctx.thenPersist(MovieDeleted.builder().user(cmd.getMovie()).entityId(entityId()).build(),
+        behaviorBuilder.setCommandHandler(MovieCommand.DeleteMovie.class, (cmd, ctx) ->
+                ctx.thenPersist(MovieEvent.MovieDeleted.builder().movie(cmd.getMovie()).entityId(entityId()).build(),
                         evt -> ctx.reply(Done.getInstance()))
         );
 
-        behaviorBuilder.setEventHandler(MovieDeleted.class, evt ->
-                MovieState.builder().user(Optional.empty())
+        behaviorBuilder.setEventHandler(MovieEvent.MovieDeleted.class, evt ->
+                MovieStates.builder().movie(Optional.empty())
                         .timestamp(LocalDateTime.now().toString()).build()
         );
 
-        behaviorBuilder.setReadOnlyCommandHandler(MovieCurrentState.class, (cmd, ctx) ->
+        behaviorBuilder.setReadOnlyCommandHandler(MovieCommand.MovieCurrentState.class, (cmd, ctx) ->
                 ctx.reply(state().getMovie())
         );
 
