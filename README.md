@@ -19,31 +19,24 @@ https://github.com/deepakmehra10/lagom-template.git
 
 #### 1. Create Movie:
 
-Route(Method - POST) : `localhost:9000/api/movie`
+Route(Method - POST) : `localhost:9000api/new-movie`
 
 Rawdata(json): 
     {
 	"id": "1",
-	"name": "User 1",
-	"age": 24
+	"name": "Avengers",
+	"genre": "Action"
     }
 
 
 #### 2. Update Movie:
 
-Route(Method - PUT) : `localhost:9000/api/movie`
-
-Rawdata(json): 
-    {
-	"id": "1",
-	"name": "User 1",
-	"age": 30
-    }
+Route(Method - PUT) : `localhost:9000/api/update-movie/:id`
     
 
 #### 3. Delete Movie:
 
-Route(Method - DELETE) : `localhost:9000/api/movie/:id`
+Route(Method - DELETE) : `localhost:9000/api/delete-movie/:id`
     
 
 #### 4. Get Movie details:
