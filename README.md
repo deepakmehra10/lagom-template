@@ -19,7 +19,7 @@ https://github.com/deepakmehra10/lagom-template.git
 
 #### 1. Create Movie:
 
-Route(Method - POST) : `localhost:9000api/new-movie`
+Route(Method - POST) : `localhost:9000/api/new-movie`
 
 Rawdata(json): 
     {
