@@ -15,5 +15,38 @@ https://github.com/deepakmehra10/lagom-template.git
 
 `mvn lagom:runAll`
 
+## Json Formats for different Rest services are mentioned below :
 
+#### 1. Create Movie:
+
+Route(Method - POST) : `localhost:9000/api/movie`
+
+Rawdata(json): 
+    {
+	"id": "1",
+	"name": "User 1",
+	"age": 24
+    }
+
+
+#### 2. Update Movie:
+
+Route(Method - PUT) : `localhost:9000/api/movie`
+
+Rawdata(json): 
+    {
+	"id": "1",
+	"name": "User 1",
+	"age": 30
+    }
+    
+
+#### 3. Delete Movie:
+
+Route(Method - DELETE) : `localhost:9000/api/movie/:id`
+    
+
+#### 4. Get Movie details:
+
+Route(Method - GET) : `localhost:9000/api/movie/:id`
 
