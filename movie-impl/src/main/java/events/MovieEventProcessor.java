@@ -18,9 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
-/**
- * Created by knoldus on 31/1/17.
- */
+
 public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MovieEventProcessor.class);
@@ -31,18 +29,31 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     private PreparedStatement writeMovies;
     private PreparedStatement deleteMovies;
 
+    /**
+     *
+     * @param session
+     * @param readSide
+     */
     @Inject
     public MovieEventProcessor(final CassandraSession session, final CassandraReadSide readSide) {
         this.session = session;
         this.readSide = readSide;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public PSequence<AggregateEventTag<MovieEvent>> aggregateTags() {
         LOGGER.info(" aggregateTags method ... ");
         return TreePVector.singleton(MovieEventTag.INSTANCE);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public ReadSideHandler<MovieEvent> buildHandler() {
         LOGGER.info(" buildHandler method ... ");
@@ -57,6 +68,10 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
                 .build();
     }
 
+    /**
+     *
+     * @return
+     */
     // Execute only once while application is start
     private CompletionStage<Done> createTable() {
         return session.executeCreateTable(
@@ -69,6 +84,11 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     * START: Prepare statement for insert Movie values into Movies table.
     * This is just creation of prepared statement, we will map this statement with our event
     */
+
+    /**
+     *
+     * @return
+     */
     private CompletionStage<Done> prepareWriteMovie() {
         return session.prepare(
                 "INSERT INTO Movies (id, name, genre) VALUES (?, ?, ?)"
@@ -78,11 +98,21 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
         });
     }
 
+    /**
+     *
+     * @param statement
+     */
     private void setWriteMovies(PreparedStatement statement) {
         this.writeMovies = statement;
     }
 
     // Bind prepare statement while MovieCreate event is executed
+
+    /**
+     *
+     * @param event
+     * @return
+     */
     private CompletionStage<List<BoundStatement>> processPostAdded(MovieCreated event) {
         BoundStatement bindWriteMovie = writeMovies.bind();
         bindWriteMovie.setString("id", event.getMovie().getId());
@@ -95,6 +125,12 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     /* START: Prepare statement for update the data in Movies table.
     * This is just creation of prepared statement, we will map this statement with our event
     */
+
+    /**
+     *
+     * @param event
+     * @return
+     */
     private CompletionStage<List<BoundStatement>> processPostUpdated(MovieUpdated event) {
         BoundStatement bindWriteMovie = writeMovies.bind();
         bindWriteMovie.setString("id", event.getMovie().getId());
@@ -107,6 +143,11 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
     /* START: Prepare statement for delete the the Movie from table.
     * This is just creation of prepared statement, we will map this statement with our event
     */
+
+    /**
+     *
+     * @return
+     */
     private CompletionStage<Done> prepareDeleteMovie() {
         return session.prepare(
                 "DELETE FROM Movies WHERE id=?"
@@ -116,10 +157,19 @@ public class MovieEventProcessor extends ReadSideProcessor<MovieEvent> {
         });
     }
 
+    /**
+     *
+     * @param deleteMovies
+     */
     private void setDeleteMovies(PreparedStatement deleteMovies) {
         this.deleteMovies = deleteMovies;
     }
 
+    /**
+     *
+     * @param event
+     * @return
+     */
     private CompletionStage<List<BoundStatement>> processPostDeleted(MovieDeleted event) {
         BoundStatement bindWriteMovie = deleteMovies.bind();
         bindWriteMovie.setString("id", event.getMovie().getId());

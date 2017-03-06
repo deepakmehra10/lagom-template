@@ -19,6 +19,11 @@ public class MovieServiceImpl implements MovieService {
     private final PersistentEntityRegistry persistentEntityRegistry;
     private final CassandraSession session;
 
+    /**
+     * @param registry
+     * @param readSide
+     * @param session
+     */
     @Inject
     public MovieServiceImpl(final PersistentEntityRegistry registry, ReadSide readSide, CassandraSession session) {
         this.persistentEntityRegistry = registry;
@@ -28,6 +33,10 @@ public class MovieServiceImpl implements MovieService {
         readSide.register(MovieEventProcessor.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ServiceCall<NotUsed, Optional<Movie>> movie(String id) {
         return request -> {
@@ -45,7 +54,9 @@ public class MovieServiceImpl implements MovieService {
         };
     }
 
-
+    /**
+     * @return
+     */
     @Override
     public ServiceCall<Movie, Done> newMovie() {
         return movie -> {
@@ -54,6 +65,10 @@ public class MovieServiceImpl implements MovieService {
         };
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ServiceCall<Movie, Done> updateMovie(String id) {
         return movie -> {
@@ -62,6 +77,10 @@ public class MovieServiceImpl implements MovieService {
         };
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ServiceCall<NotUsed, Done> deleteMovie(String id) {
         return request -> {
@@ -71,7 +90,10 @@ public class MovieServiceImpl implements MovieService {
         };
     }
 
-
+    /**
+     * @param movie
+     * @return
+     */
     private PersistentEntityRef<MovieCommand> movieEntityRef(Movie movie) {
         return persistentEntityRegistry.refFor(MovieEntity.class, movie.getId());
     }

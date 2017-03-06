@@ -8,7 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class MovieEntity  extends PersistentEntity<MovieCommand, MovieEvent, MovieStates> {
-
+    /**
+     *
+     * @param snapshotState
+     * @return
+     */
     @Override
     public Behavior initialBehavior(Optional<MovieStates> snapshotState) {
 
